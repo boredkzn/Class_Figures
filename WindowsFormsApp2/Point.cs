@@ -10,26 +10,27 @@ namespace WindowsFormsApp2
 {
     public class Point : Figure
     {
-        public static Bitmap bitmap1;
-        public static PictureBox pictureBox1;
-        public static Pen pen1;
-
         public Point(int x, int y)
         {
             this.x = x;
             this.y = y;
         }
 
+        public Point()
+        {
+            this.x = 0;
+            this.y = 0;
+        }
         public override void Draw()
         {
-            using (Graphics g = Graphics.FromImage(bitmap1))
+            using (Graphics g = Graphics.FromImage(Init.bitmap1))
             {
                 /// Рисование на белом фоне. Делаем заливку белым цветом
                 g.Clear(Color.White);
-                g.DrawEllipse(pen1, this.x, this.y, 1, 1);
+                g.DrawEllipse(Init.pen1, this.x, this.y, 1, 1);
             }
             /// Назначаем наш Bitmap свойству Image
-            pictureBox1.Image = bitmap1;
+            Init.pictureBox1.Image = Init.bitmap1;
         }
 
         public override void MoveTo(int x, int y)

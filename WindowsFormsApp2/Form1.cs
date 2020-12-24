@@ -12,56 +12,113 @@ namespace WindowsFormsApp2
 {
     public partial class Form1 : Form
     {
+        int flag = 0;
         Bitmap bitmap;
-        Point point;
         Pen pen;
         Circle circle;
         Rectagle rectagle;
         Car car;
+        ShapeContainer shapeContainer;
         public Form1()
         {
             InitializeComponent();
+
+            groupBox1.Visible = false;
+            groupBox2.Visible = false;
+            groupBox3.Visible = false;
+            groupBox4.Visible = false;
+            groupBox5.Visible = false;
             this.bitmap = new Bitmap(pictureBox1.ClientSize.Width, pictureBox1.ClientSize.Height);
-            this.point = new Point(100, 100);
-            Point.bitmap1 = this.bitmap;
-            Point.pictureBox1 = pictureBox1;
             this.pen = new Pen(Color.Black, 5);
-            Point.pen1 = this.pen;
-            this.circle = new Circle(200, 200, 100);
 
-            Ellipse.bitmap1 = this.bitmap;
-            Ellipse.pen1 = this.pen;
-            Ellipse.pictureBox1 = pictureBox1;
+            Init.bitmap1 = this.bitmap;
+            Init.pictureBox1 = pictureBox1;
+            Init.pen1 = this.pen;
 
-            this.rectagle = new Rectagle(100, 100, 100, 100);
-            Rectagle.bitmap1 = this.bitmap;
-            Rectagle.pen1 = this.pen;
-            Rectagle.pictureBox1 = pictureBox1;
-
-            this.car = new Car(100, 100, 200, 100);
-            Car.bitmap1 = this.bitmap;
-            Car.pictureBox1 = pictureBox1;
-            Car.pen1 = this.pen;
-
-            String.bitmap1 = this.bitmap;
-            String.pen1 = this.pen;
-            String.pictureBox1 = pictureBox1;
-
-            textBox1.Text = "50";
-            textBox2.Text = "50";
+            this.shapeContainer = new ShapeContainer();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            //this.point.Draw();
-            //this.circle.Draw();
-            //this.rectagle.Draw();
-            this.car.Draw();
+            if(flag == 1)
+            {
+                try
+                {
+                    this.circle.Clear();
+                    this.circle.MoveTo(int.Parse(textBoxshiftX.Text), int.Parse(textBoxshiftY.Text));
+                }
+                catch
+                {
+                    MessageBox.Show("Не все поля заполнены.");
+                }
+            }
+            if (flag == 2)
+            {
+                try
+                {
+                    this.rectagle.Clear();
+                    this.rectagle.MoveTo(int.Parse(textBoxshiftX.Text), int.Parse(textBoxshiftY.Text));
+                }
+                catch
+                {
+                    MessageBox.Show("Не все поля заполнены.");
+                }
+            }
+            if(flag == 3)
+            {
+                try
+                {
+                    this.car.Clear();
+                    this.car.MoveTo(int.Parse(textBoxshiftX.Text), int.Parse(textBoxshiftY.Text));
+                }
+                catch
+                {
+                    MessageBox.Show("Не все поля заполнены.");
+                }
+            }
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            this.car.MoveTo(int.Parse(textBox1.Text), int.Parse(textBox2.Text));
+            if (flag == 1)
+            {
+                try
+                {
+                    this.circle = new Circle(int.Parse(textBoxX.Text), int.Parse(textBoxY.Text), int.Parse(textBoxR.Text));
+                    ShapeContainer.AddFigure(this.circle);
+                    this.circle.Draw();
+                }
+                catch
+                {
+                    MessageBox.Show("Не все поля заполнены.");
+                }
+            }
+            if(flag == 2)
+            {
+                try
+                {
+                    this.rectagle = new Rectagle(int.Parse(textBoxRectX.Text), int.Parse(textBoxRectY.Text), int.Parse(textBoxW.Text), int.Parse(textBoxH.Text));
+                    ShapeContainer.AddFigure(this.rectagle);
+                    this.rectagle.Draw();
+                }
+                catch
+                {
+                    MessageBox.Show("Не все поля заполнены.");
+                }
+            }
+            if(flag == 3)
+            {
+                try
+                {
+                    this.car = new Car(int.Parse(textBox3.Text), int.Parse(textBox4.Text), int.Parse(textBox2.Text), int.Parse(textBox1.Text), textBoxNameCar.Text);
+                    ShapeContainer.AddFigure(this.car);
+                    this.car.Draw();
+                }
+                catch
+                {
+                    MessageBox.Show("Не все поля заполнены.");
+                }
+            }
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -96,6 +153,78 @@ namespace WindowsFormsApp2
             {
                 this.car.MoveTo(-10, 0);
             }
+        }
+
+        private void toolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            groupBox1.Visible = true;
+            groupBox2.Visible = true;
+            groupBox3.Visible = false;
+            groupBox4.Visible = true;
+            groupBox5.Visible = false;
+            this.flag = 1;
+        }
+
+        private void toolStripMenuItem3_Click(object sender, EventArgs e)
+        {
+            groupBox3.Visible = true;
+            groupBox2.Visible = false;
+            groupBox1.Visible = true;
+            groupBox4.Visible = true;
+            groupBox5.Visible = false;
+            this.flag = 2;
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            comboBox1.Items.Clear();
+            foreach (Figure figure in ShapeContainer.arrayList)
+            {
+                comboBox1.Items.Add(figure);
+            }       
+        }
+
+        private void buttonDelete_Click(object sender, EventArgs e)
+        {
+            if(comboBox1.SelectedItem.GetType() == (new Circle()).GetType())
+            {
+                this.circle = (Circle)comboBox1.SelectedItem;
+                this.circle.DeleteF(this.circle);
+            }
+            else if (comboBox1.SelectedItem.GetType() == (new Rectagle()).GetType())
+            {
+                this.rectagle = (Rectagle)comboBox1.SelectedItem;
+                this.rectagle.DeleteF(this.rectagle);
+            }
+            else if (comboBox1.SelectedItem.GetType() == (new Car()).GetType())
+            {
+                this.car = (Car)comboBox1.SelectedItem;
+                this.car.DeleteF(this.car);
+            }
+        }
+
+        private void label8_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void toolStripMenuItem4_Click(object sender, EventArgs e)
+        {
+            groupBox3.Visible = false;
+            groupBox2.Visible = false;
+            groupBox1.Visible = true;
+            groupBox4.Visible = true;
+            groupBox5.Visible = true;
+            this.flag = 3;
+        }
+
+        private void игровойРежимToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            groupBox1.Visible = false;
+            groupBox2.Visible = false;
+            groupBox3.Visible = false;
+            groupBox4.Visible = false;
+            groupBox5.Visible = false;
         }
     }
 }

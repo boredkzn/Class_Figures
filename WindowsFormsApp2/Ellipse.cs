@@ -10,10 +10,6 @@ namespace WindowsFormsApp2
 {
     public class Ellipse : Figure
     {
-        public static Bitmap bitmap1;
-        public static PictureBox pictureBox1;
-        public static Pen pen1;
-
         public Ellipse(int x, int y, int w, int h)
         {
             this.x = x;
@@ -22,16 +18,24 @@ namespace WindowsFormsApp2
             this.h = h;
         }
 
+        public Ellipse()
+        {
+            this.x = 0;
+            this.y = 0;
+            this.w = 0;
+            this.h = 0;
+        }
+
         public override void Draw()
         {
-            using (Graphics g = Graphics.FromImage(bitmap1))
+            using (Graphics g = Graphics.FromImage(Init.bitmap1))
             {
                 /// Рисование на белом фоне. Делаем заливку белым цветом
                 //g.Clear(Color.White);
-                g.DrawEllipse(pen1, this.x, this.y, this.w, this.h);
+                g.DrawEllipse(Init.pen1, this.x, this.y, this.w, this.h);
             }
             /// Назначаем наш Bitmap свойству Image
-            pictureBox1.Image = bitmap1;
+            Init.pictureBox1.Image = Init.bitmap1;
         }
 
         public override void MoveTo(int x, int y)
@@ -46,6 +50,11 @@ namespace WindowsFormsApp2
     public class Circle : Ellipse
     {
         public Circle(int x, int y, int r) : base (x, y, r, r)
+        {
+
+        }
+
+        public Circle() : base()
         {
 
         }
